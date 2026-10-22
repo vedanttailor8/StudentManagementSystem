@@ -1,0 +1,41 @@
+
+@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Delete Student";
+}
+
+<div class="section-heading">
+    <div>
+        <h2>Delete Student</h2>
+        <p>Review the record before permanently deleting it.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back to Students</a>
+</div>
+
+<div class="form-card delete-card">
+    <div class="delete-warning-icon">!</div>
+    <h3>Are you sure?</h3>
+    <p class="delete-message">
+        This action will permanently remove this student record.
+    </p>
+
+    <div class="delete-student-info">
+        <strong>@Model.FullName</strong>
+        <span>@Model.EnrollmentNumber</span>
+        <span>@Model.Email</span>
+        <span>@Model.Course · Semester @Model.Semester</span>
+    </div>
+
+    <form asp-action="Delete" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" name="id" value="@Model.Id" />
+
+        <div class="form-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-danger">
+                Confirm Delete
+            </button>
+        </div>
+    </form>
+</div>

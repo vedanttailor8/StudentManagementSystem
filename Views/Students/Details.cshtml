@@ -1,0 +1,63 @@
+
+@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Student Details";
+}
+
+<div class="section-heading">
+    <div>
+        <h2>Student Profile</h2>
+        <p>Complete information about this student.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back to Students</a>
+</div>
+
+<div class="form-card">
+    <div class="student-profile-banner">
+        <span class="large-student-avatar">
+            @(string.IsNullOrWhiteSpace(Model.FullName)
+                ? "?"
+                : Model.FullName.Substring(0, 1).ToUpper())
+        </span>
+        <div>
+            <h3>@Model.FullName</h3>
+            <p>@Model.EnrollmentNumber</p>
+            <span class="course-badge">@Model.Course</span>
+        </div>
+    </div>
+
+    <div class="detail-grid">
+        <div class="detail-item">
+            <span>Full Name</span>
+            <strong>@Model.FullName</strong>
+        </div>
+        <div class="detail-item">
+            <span>Enrollment Number</span>
+            <strong>@Model.EnrollmentNumber</strong>
+        </div>
+        <div class="detail-item">
+            <span>Email Address</span>
+            <strong>@Model.Email</strong>
+        </div>
+        <div class="detail-item">
+            <span>Course</span>
+            <strong>@Model.Course</strong>
+        </div>
+        <div class="detail-item">
+            <span>Semester</span>
+            <strong>@Model.Semester</strong>
+        </div>
+        <div class="detail-item">
+            <span>Date of Birth</span>
+            <strong>@(Model.DateOfBirth?.ToString("dd MMM yyyy") ?? "Not provided")</strong>
+        </div>
+    </div>
+
+    <div class="form-actions">
+        <a asp-action="Edit" asp-route-id="@Model.Id"
+           class="btn btn-primary">Edit Student</a>
+        <a asp-action="Delete" asp-route-id="@Model.Id"
+           class="btn btn-outline-danger">Delete Student</a>
+    </div>
+</div>

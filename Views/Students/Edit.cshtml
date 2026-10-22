@@ -1,0 +1,91 @@
+
+@model StudentManagementSystem.Models.Student
+
+@{
+    ViewData["Title"] = "Edit Student";
+}
+
+<div class="section-heading">
+    <div>
+        <h2>Edit Student</h2>
+        <p>Update the selected student's information.</p>
+    </div>
+    <a asp-action="Index" class="btn btn-outline-secondary">← Back to Students</a>
+</div>
+
+<div class="form-card">
+    <div class="form-card-heading">
+        <span class="form-heading-icon">✎</span>
+        <div>
+            <h3>Edit Student Information</h3>
+            <p>Enrollment number: @Model.EnrollmentNumber</p>
+        </div>
+    </div>
+
+    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="Id" />
+
+        <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
+
+        <div class="form-grid">
+            <div>
+                <label asp-for="EnrollmentNumber" class="form-label"></label>
+                <input asp-for="EnrollmentNumber" class="form-control" />
+                <span asp-validation-for="EnrollmentNumber" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="FullName" class="form-label"></label>
+                <input asp-for="FullName" class="form-control" />
+                <span asp-validation-for="FullName" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Email" class="form-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Course" class="form-label"></label>
+                <select asp-for="Course" class="form-select">
+                    <option value="BTech CSE">BTech CSE</option>
+                    <option value="BTech CE">BTech CE</option>
+                    <option value="BTech IT">BTech IT</option>
+                    <option value="BTech AIML">BTech AIML</option>
+                    <option value="D2D">D2D</option>
+                    <option value="SE Cloud">SE Cloud</option>
+                    <option value="Cyber Security">Cyber Security</option>
+                </select>
+                <span asp-validation-for="Course" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="Semester" class="form-label"></label>
+                <select asp-for="Semester" class="form-select">
+                    @for (int i = 1; i <= 12; i++)
+                    {
+                        <option value="@i">@i</option>
+                    }
+                </select>
+                <span asp-validation-for="Semester" class="text-danger"></span>
+            </div>
+
+            <div>
+                <label asp-for="DateOfBirth" class="form-label"></label>
+                <input asp-for="DateOfBirth" type="date" class="form-control" />
+                <span asp-validation-for="DateOfBirth" class="text-danger"></span>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <a asp-action="Index" class="btn btn-outline-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary">Update Student</button>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -1,0 +1,94 @@
+
+@model IEnumerable<StudentManagementSystem.Models.Student>
+
+@{
+    ViewData["Title"] = "Students";
+}
+
+<div class="section-heading">
+    <div>
+        <h2>Student Directory</h2>
+        <p>Search, view and manage your student records.</p>
+    </div>
+
+    <a asp-action="Create" class="btn btn-primary">
+        + Add Student
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">@TempData["Success"]</div>
+}
+
+<div class="card">
+    <div class="card-header list-toolbar">
+        <form asp-action="Index" method="get" class="search-form">
+            <input type="search" name="search" value="@ViewData["Search"]"
+                   class="form-control"
+                   placeholder="Search name, enrollment, email or course..." />
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a asp-action="Index" class="btn btn-outline-secondary">Reset</a>
+        </form>
+
+        <span class="record-count">@Model.Count() records</span>
+    </div>
+
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>STUDENT</th>
+                    <th>ENROLLMENT</th>
+                    <th>COURSE</th>
+                    <th>SEMESTER</th>
+                    <th class="text-end">ACTIONS</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (!Model.Any())
+                {
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            No matching students found.
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in Model)
+                    {
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <span class="student-avatar">
+                                        @(string.IsNullOrWhiteSpace(student.FullName)
+                                            ? "?"
+                                            : student.FullName.Substring(0, 1).ToUpper())
+                                    </span>
+                                    <div>
+                                        <strong>@student.FullName</strong>
+                                        <small>@student.Email</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@student.EnrollmentNumber</td>
+                            <td><span class="course-badge">@student.Course</span></td>
+                            <td>@student.Semester</td>
+                            <td class="text-end">
+                                <div class="action-buttons">
+                                    <a asp-action="Details" asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-primary">View</a>
+                                    <a asp-action="Edit" asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-secondary">Edit</a>
+                                    <a asp-action="Delete" asp-route-id="@student.Id"
+                                       class="btn btn-sm btn-outline-danger">Delete</a>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,134 @@
+﻿
+@using StudentManagementSystem.Models
+@{
+    ViewData["Title"] = "Home Page";
+    var recentStudents =
+        ViewBag.RecentStudents as List<Student>
+        ?? new List<Student>();
+}
+
+<div class="welcome-banner">
+    <div>
+        <span class="eyebrow">OVERVIEW</span>
+        <h2>Welcome to StudentHub 👋</h2>
+        <p>Manage student records and monitor your academic data.</p>
+    </div>
+    <a asp-controller="Students" asp-action="Create"
+       class="btn btn-light banner-button">
+        + Add New Student
+    </a>
+</div>
+
+@if (TempData["Success"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["Success"]
+    </div>
+}
+
+<div class="section-heading">
+    <div>
+        <h3>Dashboard Overview</h3>
+        <p>Your student management at a glance.</p>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-top">
+            <span class="stat-icon blue-icon">♙</span>
+            <span class="stat-tag">TOTAL</span>
+        </div>
+        <p>Total Students</p>
+        <h2>@ViewBag.TotalStudents</h2>
+        <small>Student records in the database</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span class="stat-icon purple-icon">▤</span>
+            <span class="stat-tag">COURSES</span>
+        </div>
+        <p>Courses Represented</p>
+        <h2>@ViewBag.TotalCourses</h2>
+        <small>Distinct courses in student records</small>
+    </div>
+
+    <div class="stat-card">
+        <div class="stat-top">
+            <span class="stat-icon green-icon">▦</span>
+            <span class="stat-tag">ACADEMIC</span>
+        </div>
+        <p>Semesters Represented</p>
+        <h2>@ViewBag.TotalSemesters</h2>
+        <small>Distinct semester values</small>
+    </div>
+</div>
+
+<div class="section-heading recent-heading">
+    <div>
+        <h3>Recent Students</h3>
+        <p>The latest student records added to the system.</p>
+    </div>
+    <a asp-controller="Students" asp-action="Index"
+       class="btn btn-outline-primary">View All Students →</a>
+</div>
+
+<div class="card dashboard-table">
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>STUDENT</th>
+                    <th>ENROLLMENT NO.</th>
+                    <th>COURSE</th>
+                    <th>SEMESTER</th>
+                    <th>ACTION</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (recentStudents.Count == 0)
+                {
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <div class="empty-icon">♙</div>
+                            <strong>No students yet</strong>
+                            <p>Add your first student to populate the dashboard.</p>
+                            <a asp-controller="Students" asp-action="Create"
+                               class="btn btn-primary">Add Student</a>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    @foreach (var student in recentStudents)
+                    {
+                        <tr>
+                            <td>
+                                <div class="student-cell">
+                                    <span class="student-avatar">
+                                        @(string.IsNullOrWhiteSpace(student.FullName)
+                                            ? "?"
+                                            : student.FullName.Substring(0, 1).ToUpper())
+                                    </span>
+                                    <div>
+                                        <strong>@student.FullName</strong>
+                                        <small>@student.Email</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>@student.EnrollmentNumber</td>
+                            <td><span class="course-badge">@student.Course</span></td>
+                            <td>@student.Semester</td>
+                            <td>
+                                <a asp-controller="Students" asp-action="Details"
+                                   asp-route-id="@student.Id"
+                                   class="action-link">View</a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
